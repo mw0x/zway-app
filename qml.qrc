@@ -1,0 +1,37 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/ActionBar.qml</file>
+        <file>qml/ActionButton.qml</file>
+        <file>qml/ActionGroup.qml</file>
+        <file>qml/ActionMenu.qml</file>
+        <file>qml/ActionPicker.qml</file>
+        <file>qml/BusyBox.qml</file>
+        <file>qml/controls/Browser.qml</file>
+        <file>qml/controls/Button.qml</file>
+        <file>qml/controls/CheckBox.qml</file>
+        <file>qml/controls/ImageLabel.qml</file>
+        <file>qml/controls/LineEdit.qml</file>
+        <file>qml/controls/NavigationDrawer.qml</file>
+        <file>qml/controls/ScrollBar.qml</file>
+        <file>qml/controls/SpreadEffect.qml</file>
+        <file>qml/controls/SwipeArea.qml</file>
+        <file>qml/controls/TextBox.qml</file>
+        <file>qml/Dialog.qml</file>
+        <file>qml/main.qml</file>
+        <file>qml/screens/Console.qml</file>
+        <file>qml/screens/CreateAccount.qml</file>
+        <file>qml/screens/Image.qml</file>
+        <file>qml/screens/Login.qml</file>
+        <file>qml/Status.qml</file>
+        <file>qml/utils.js</file>
+        <file>qml/Views.qml</file>
+        <file>qml/views/Contact.qml</file>
+        <file>qml/views/Content.qml</file>
+        <file>qml/views/History.qml</file>
+        <file>qml/views/Home.qml</file>
+        <file>qml/views/Settings.qml</file>
+        <file>qml/views/settings/CheckBoxSetting.qml</file>
+        <file>qml/views/Switcher.qml</file>
+        <file>qml/controls/Badge.qml</file>
+    </qresource>
+</RCC>

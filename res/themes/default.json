@@ -1,0 +1,95 @@
+{
+    "backgroundColor" : "#909090",
+
+    "Status" : {
+        "fontSize" : 14
+    },
+
+    "ActionBar" : {
+        "color"  : "#606060",
+        "height" : 56
+    },
+
+    "ActionMenu" : {
+        "backgroundColor"  : "#D6D6D6",
+        "borderColor"      : "#707070",
+        "fontSize"         : 14,
+        "itemPressedColor" : "bisque"
+    },
+
+    "ActionPicker" : {
+        "backgroundColor"  : "#D6D6D6",
+        "borderColor"      : "#707070",
+        "fontSize"         : 14,
+        "itemPressedColor" : "bisque"
+    },
+
+    "NavigationDrawer" : {
+        "backgroundColor" : "#909090",
+        "itemColor"       : "#D6D6D6",
+        "separatorColor"  : "#B0B0B0",
+        "fontSize"        : 14
+    },
+
+    "Button" : {
+        "backgroundColor" : "#D6D6D6",
+        "pressedColor"    : "bisque",
+        "borderColor"     : "#707070",
+        "borderWidth"     : 1,
+        "fontSize"        : 16,
+        "minWidth"        : 72
+    },
+
+    "CheckBox" : {
+        "fontSize" : 13
+    },
+
+    "LineEdit" : {
+        "padding"         : 8,
+        "backgroundColor" : "white",
+        "borderColor"     : "#707070",
+        "borderRadius"    : 6,
+        "selectionColor"  : "bisque",
+        "fontSize"        : 14
+    },
+
+    "ScrollBar" : {
+        "color" : "#B0B0B0"
+    },
+
+    "HomeView" : {
+        "itemColor"      : "#D6D6D6",
+        "separatorColor" : "#B0B0B0",
+        "fontSize"       : 14
+    },
+
+    "ContactsView" : {
+        "itemColor"      : "#D6D6D6",
+        "separatorColor" : "#B0B0B0",
+        "fontSize"       : 14
+    },
+
+    "ContentView" : {
+        "itemColor" : "#D6D6D6",
+        "fontSize"  : 10
+    },
+
+    "HistoryView" : {
+
+        "Message" : {
+            "backgroundColor" : "white",
+            "borderColor"     : "#707070",
+            "borderRadius"    : 6,
+            "fontSize"        : 14
+        },
+
+        "MessageText" : {
+            "padding"         : 6,
+            "backgroundColor" : "#D6D6D6",
+            "borderColor"     : "#707070",
+            "borderRadius"    : 6,
+            "selectionColor"  : "bisque",
+            "fontSize"        : 14
+        }
+    }
+}
