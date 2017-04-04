@@ -66,13 +66,13 @@ android {
 
 macx:!ios {
 
-    DEPS_PATH = $$LIBZWAY_ROOT/build/install/osx
+    DEPS_PATH = $$DEPS_PATH/osx
 
-    PRE_TARGETDEPS += $$DEPS_PATH/lib/libzway.a
+    PRE_TARGETDEPS += $$LIBZWAY_PATH/libzway.a
 
     INCLUDEPATH += $$DEPS_PATH/include
     DEPENDPATH  += $$DEPS_PATH/include
-    LIBS        += -L$$DEPS_PATH/lib -lzway -lgnutls -lhogweed -lnettle -lgmp -lsqlite3 -lexif -liconv -lz
+    LIBS        += -L$$LIBZWAY_PATH -L$$DEPS_PATH/lib -lzway -lgnutls -lhogweed -lnettle -lgmp -lsqlite3 -lexif -liconv -lz
 }
 
 ios {
