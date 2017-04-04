@@ -33,6 +33,10 @@ QT += qml quick
 
 CONFIG += c++11
 
+macx {
+ICON = res/icons/zway.icns
+}
+
 linux-g++ {
 QMAKE_LFLAGS += -static-libgcc
 QMAKE_LFLAGS += -static-libstdc++
