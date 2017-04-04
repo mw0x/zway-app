@@ -153,7 +153,7 @@ Rectangle {
                         id: password
                         anchors {left: parent.left; right: parent.right}
                         password: true
-                        text: "mysecretpw"
+                        text: ""
                     }
 
                     Controls.Button {

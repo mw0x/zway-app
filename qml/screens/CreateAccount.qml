@@ -250,7 +250,7 @@ Rectangle {
                         id: password1
                         anchors {left: parent.left; right: parent.right}
                         password: true
-                        text: "mysecretpw"
+                        text: ""
                         KeyNavigation.tab: password2
                     }
 
@@ -264,7 +264,7 @@ Rectangle {
                         id: password2
                         anchors {left: parent.left; right: parent.right}
                         password: true
-                        text: "mysecretpw"
+                        text: ""
                         KeyNavigation.tab: name
                     }
 
