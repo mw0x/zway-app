@@ -30,6 +30,8 @@
 #include "historymodel.h"
 #include "backendbase.h"
 
+#include <QDebug>
+
 // ============================================================ //
 
 /**
@@ -73,7 +75,7 @@ QVariant HistoryModel::data(const QModelIndex &index, int role) const
         return QVariant();
     }
 
-    const QVariantMap &item = m_items[index.row()].toMap();
+    const QVariantMap &item = m_items[m_items.size() - index.row() - 1].toMap();
 
     switch (role) {
         case IdRole:
@@ -103,7 +105,7 @@ QVariant HistoryModel::get(int index)
 {
     if (index >= 0 && index < m_items.size()) {
 
-        return m_items[index];
+        return m_items[m_items.size() - index - 1];
     }
 
     return QVariant();
@@ -116,13 +118,11 @@ QVariant HistoryModel::get(int index)
 
 void HistoryModel::append(const QVariantMap &message)
 {
-    int rc = rowCount();
-
     beginInsertRows(QModelIndex(), 0, 0);
 
-    m_items.insert(0, message);
+    m_items.append(message);
 
-    m_indexes[message["id"].toUInt()] = rc;
+    m_indexes[message["id"].toUInt()] = m_items.size() - 1;
 
     endInsertRows();
 }
@@ -138,13 +138,13 @@ void HistoryModel::update(const QVariantMap &message)
 
     if (m_indexes.find(messageId) != m_indexes.end()) {
 
-        beginResetModel();
-
-        uint32_t i = m_items.size() - m_indexes[messageId] - 1;
+        quint32 i = m_indexes[messageId];
 
         m_items[i] = message;
 
-        endResetModel();
+        QModelIndex modelIndex = index(m_items.size() - i - 1);
+
+        emit dataChanged(modelIndex, modelIndex);
     }
 }
 
@@ -180,7 +180,7 @@ void HistoryModel::updateItems(const QJSValue &callback)
 
                 QVariantMap item = messageToVariant(message);
 
-                items.insert(0, item);
+                items.append(item);
             }
 
             emit updateView(items);

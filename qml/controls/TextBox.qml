@@ -32,58 +32,59 @@ import QtQuick 2.7
 FocusScope {
     id: scope
 
-    property alias color: wrap.color
-    property alias border: wrap.border
-    property alias radius: wrap.radius
+    property alias edit: textEdit
 
-    property alias text: edit.text
-    property alias length: edit.length
+    property alias text: textEdit.text
 
-    property alias textEdit: edit
+    property int minHeightLines: 1
+    property int maxHeightLines: 6
 
-    property int padding: 6
+    readonly property real lineOffset: 2 * sp
+    readonly property real lineHeight: textEdit.font.pixelSize + lineOffset
 
-    function plainText() {
+    readonly property real minHeight: minHeightLines * lineHeight
+    readonly property real maxHeight: maxHeightLines * lineHeight
 
-        return edit.getText(0, edit.length);
-    }
+    clip: true
+    height: textEdit.height > maxHeight ? maxHeight : ( textEdit.height < minHeight ? minHeight : textEdit.height)
 
-    Rectangle {
-        id: wrap
-        anchors.fill: parent
+    function plainText() { return textEdit.getText(0, textEdit.length).replace(/\0/, ''); }
 
-        Flickable {
-            id: flick
-            anchors {fill: parent; margins: padding}
-            contentWidth: edit.paintedWidth
-            contentHeight: edit.paintedHeight
-            flickableDirection: Flickable.VerticalFlick
-            clip: true
+    Flickable {
+        id: flickable
 
-            onHeightChanged: {
+        width: parent.width
+        height: parent.height
 
-                if (height < edit.cursorRectangle.y + edit.cursorRectangle.height) {
+        contentWidth: parent.width
+        contentHeight: textEdit.height
 
-                    contentY = edit.cursorRectangle.y + edit.cursorRectangle.height - height;
+        flickableDirection: Flickable.VerticalFlick
+
+        TextEdit {
+            id: textEdit
+
+            property real cursorY: 0
+
+            focus: true
+            width: parent.width
+            wrapMode: Text.Wrap
+            Keys.forwardTo: scope
+
+            onCursorYChanged: {
+
+                if (cursorY < flickable.contentY) {
+
+                    flickable.contentY = cursorY;
+                }
+                else
+                if (cursorY >= flickable.contentY + flickable.height) {
+
+                    flickable.contentY += cursorY - (flickable.contentY + flickable.height) + cursorRectangle.height;
                 }
             }
 
-            onContentHeightChanged: {
-
-                if (contentHeight > height) {
-
-                    contentY = contentHeight - height;
-                }
-            }
-
-            TextEdit {
-                id: edit
-                focus: true
-                width: flick.width
-                height: flick.height > paintedHeight ? flick.height : paintedHeight
-
-                Keys.forwardTo: scope
-            }
+            onCursorRectangleChanged: cursorY = cursorRectangle.y
         }
     }
 }

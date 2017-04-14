@@ -890,7 +890,7 @@ QJsonValue BackendBase::getContact(quint32 contactId)
 {
     UBJ::Object contact;
 
-    if (store()->query("contacts", UBJ_OBJ("id" << contactId), &contact, {}, {"name", "phone", "color"})) {
+    if (store()->query("contacts", UBJ_OBJ("id" << contactId), &contact, {}, {"id", "name", "phone", "color"})) {
 
         return ubjToJson(contact);
     }
