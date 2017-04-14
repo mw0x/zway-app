@@ -183,7 +183,7 @@
         <file>res/icons/xxxhdpi/file_image.png</file>
         <file>res/icons/xxxhdpi/file_audio.png</file>
         <file>res/icons/xxxhdpi/file_video.png</file>
-        <!--file>res/icons/xxxhdpi/ic_action_group_white.png</file-->
+        <file>res/icons/xxxhdpi/ic_action_group_white.png</file>
         <file>res/icons/xxxhdpi/ic_action_person_white.png</file>
         <file>res/icons/xxxhdpi/ic_arrow_back_white.png</file>
         <file>res/icons/xxxhdpi/ic_more_vert_white.png</file>

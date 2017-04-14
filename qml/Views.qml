@@ -80,7 +80,7 @@ Controls.SwipeArea {
 
         backend.messageIncoming.connect(function(message) {
 
-            if (!(historyView.visible && historyView.contactId === message.src)) {
+            if (!(historyView.visible && historyView.contact && historyView.contact.id === message.src)) {
 
                 if (backend.updateInbox(message.src, message.id)) {
 
@@ -107,14 +107,11 @@ Controls.SwipeArea {
 
         navigationDrawer.items = [
             {label: label, image: "/res/icons/" + dpiPrefix + "/logo1.png", bold: true},
-            {label: "Home", image: "/res/icons/" + dpiPrefix + "/ic_home_black.png"},
             {label: "Chat", image: "/res/icons/" + dpiPrefix + "/ic_message_black.png"},
             {label: "Store", image: "/res/icons/" + dpiPrefix + "/ic_sd_storage_black.png"}
         ];
 
         contactView.show();
-
-        //contentView.show();
     }
 
     function goBack() {
@@ -152,20 +149,12 @@ Controls.SwipeArea {
 
     anchors.fill: parent
 
-    state: "home"
-
     Item {
         anchors.fill: parent
 
         Views.Switcher {
             id: viewSwitcher
             anchors {top: actionBar.bottom; left: parent.left; right: parent.right; bottom: parent.bottom}
-
-            Views.Home {
-                id: homeView
-                width: parent.width
-                height: parent.height
-            }
 
             Views.Contact {
                 id: contactView
@@ -224,14 +213,13 @@ Controls.SwipeArea {
             }
 
             ActionGroup {
-                id: actions1
+                id: chatActionsGroup
                 anchors {left: backButton.right; leftMargin: 12 * dp}
                 spacing: 12 * dp
 
                 ActionButton {
                     id: contactButton
                     image: "/res/icons/" + dpiPrefix + "/ic_action_person_white.png"
-                    visible: false
                     onClicked: contactView.show()
 
                     Controls.Badge {
@@ -242,40 +230,54 @@ Controls.SwipeArea {
                 }
 
                 ActionButton {
-                    id: historiesButton
-                    image: "/res/icons/" + dpiPrefix + "/ic_message_white.png"
-                    visible: false
-
-                    /*
-                    Rectangle {
-
-                        anchors {right: parent.right; bottom: parent.bottom; margins: 4 * dp}
-                        color: "red"
-                        width: 20 * dp
-                        height: 20 * dp
-                        radius: 10 * dp
-
-                        Text {
-                            anchors.centerIn: parent
-                            color: "white"
-                            text: "12"
-                            font.pixelSize: 11 * sp
-                        }
-                    }
-                    */
-                }
-
-                /*
-                ActionButton {
                     image: "/res/icons/" + dpiPrefix + "/ic_action_group_white.png"
                     enabled: false
                 }
-                */
+            }
+
+            Item {
+                id: contactNameBox
+
+                clip: true
+                visible: false
+
+                anchors {left: chatActionsGroup.right; right: actions2.left; top: parent.top; bottom: parent.bottom; leftMargin: 12 * dp; rightMargin: 12 * dp}
+
+                Rectangle {
+
+                    readonly property real desiredWith: contactName.width + 24 * dp
+
+                    anchors {right: parent.right; verticalCenter: parent.verticalCenter}
+                    width: desiredWith > parent.width ? parent.width : desiredWith
+                    height: contactName.height + 12 * dp
+                    color: theme.backgroundColor
+                    radius: 6 * dp
+
+                    Text {
+                        id: contactName
+                        anchors.centerIn: parent
+                        text: historyView.contact ? historyView.contact.name : ""
+                        font.pixelSize: 11 * sp
+                    }
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+
+                            // ...
+                        }
+                    }
+                }
+            }
+
+            ActionGroup {
+                id: storeActionsGroup
+                anchors {left: backButton.right; leftMargin: 12 * dp}
+                spacing: 12 * dp
 
                 ActionButton {
                     id: fileSystemButton
                     image:  "/res/icons/" + dpiPrefix + (active ? "/ic_sd_storage_white_active.png" : "/ic_sd_storage_white.png")
-                    visible: false
                     onClicked: contentView.show(1)
                     active: contentView.activeModel === fileSystemModel
                 }
@@ -283,7 +285,6 @@ Controls.SwipeArea {
                 ActionButton {
                     id: localStoreButton
                     image: "/res/icons/" + dpiPrefix + (active ? "/ic_sd_storage_white_lock_active.png" : "/ic_sd_storage_white_lock.png")
-                    visible: false
                     onClicked: contentView.show(2)
                     active: contentView.activeModel === localStoreModel
                 }
@@ -291,7 +292,6 @@ Controls.SwipeArea {
                 ActionButton {
                     id: remoteStoreButton
                     image: "/res/icons/" + dpiPrefix + "/ic_cloud_white.png"
-                    visible: false
                     enabled: false
                 }
             }
@@ -372,7 +372,8 @@ Controls.SwipeArea {
                     name: "search"
                     PropertyChanges { target: zwayButton; visible: false }
                     PropertyChanges { target: backButton; visible: true }
-                    PropertyChanges { target: actions1; visible: false }
+                    PropertyChanges { target: chatActionsGroup; visible: false }
+                    PropertyChanges { target: storeActionsGroup; visible: false }
                     PropertyChanges { target: addButton; visible: false }
                     PropertyChanges { target: deleteButton; visible: false }
                     PropertyChanges { target: searchButton; visible: true }
@@ -382,13 +383,9 @@ Controls.SwipeArea {
                     name: "back"
                     PropertyChanges { target: zwayButton; visible: false }
                     PropertyChanges { target: backButton; visible: true }
-                    PropertyChanges { target: actions1; visible: false }
+                    PropertyChanges { target: chatActionsGroup; visible: false }
+                    PropertyChanges { target: storeActionsGroup; visible: false }
                     PropertyChanges { target: actions2; visible: false }
-                },
-                State {
-                    name: "history_expanded"
-                    PropertyChanges { target: zwayButton; visible: false }
-                    PropertyChanges { target: backButton; visible: true }
                 },
                 State {
                     name: "content_callback"
@@ -414,10 +411,6 @@ Controls.SwipeArea {
                         break;
 
                     case "help":
-
-                        //historyView.foobar();
-
-                        dialog.info("", "<h1>dpi physical: " + parseInt(dpiPhysical) + "</h1><h1>dpi logical: " + parseInt(dpiLogical) +"</h1>");
 
                         /*
                         backend.checkPhoneContacts(function(err, res) {
@@ -458,11 +451,9 @@ Controls.SwipeArea {
                     return;
                 }
 
-                if (index === 1) homeView.show();
+                if (index === 1) contactView.show();
                 else
-                if (index === 2) contactView.show();
-                else
-                if (index === 3) contentView.show();
+                if (index === 2) contentView.show();
 
                 navigationDrawer.hide();
             }
@@ -587,29 +578,25 @@ Controls.SwipeArea {
 
     states: [
         State {
-            name: "home"
-            PropertyChanges { target: homeView; visible: true; focus: true }
-        },
-        State {
             name: "contact"
-            PropertyChanges { target: contactButton; visible: true }
-            PropertyChanges { target: historiesButton; visible: true }
+            PropertyChanges { target: chatActionsGroup; visible: true }
+            PropertyChanges { target: storeActionsGroup; visible: false }
             PropertyChanges { target: addButton; visible: true }
             PropertyChanges { target: searchButton; visible: true }
             PropertyChanges { target: contactView; visible: true; focus: true }
         },
         State {
             name: "history"
-            PropertyChanges { target: contactButton; visible: true }
-            PropertyChanges { target: historiesButton; visible: true }
+            PropertyChanges { target: chatActionsGroup; visible: true }
+            PropertyChanges { target: contactNameBox; visible: true }
+            PropertyChanges { target: storeActionsGroup; visible: false }
             PropertyChanges { target: deleteButton; visible: true }
             PropertyChanges { target: historyView; visible: true; focus: true }
         },
         State {
             name: "content"
-            PropertyChanges { target: fileSystemButton; visible: true }
-            PropertyChanges { target: localStoreButton; visible: true }
-            PropertyChanges { target: remoteStoreButton; visible: true }
+            PropertyChanges { target: chatActionsGroup; visible: false }
+            PropertyChanges { target: storeActionsGroup; visible: true }
             PropertyChanges { target: addButton; visible: true }
             PropertyChanges { target: contentView; visible: true; focus: true }
             PropertyChanges { target: actionBar; state: contentView.callback ? "content_callback" : "" }
