@@ -57,12 +57,6 @@
         "color" : "#B0B0B0"
     },
 
-    "HomeView" : {
-        "itemColor"      : "#D6D6D6",
-        "separatorColor" : "#B0B0B0",
-        "fontSize"       : 14
-    },
-
     "ContactsView" : {
         "itemColor"      : "#D6D6D6",
         "separatorColor" : "#B0B0B0",

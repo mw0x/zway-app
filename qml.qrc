@@ -28,7 +28,6 @@
         <file>qml/views/Contact.qml</file>
         <file>qml/views/Content.qml</file>
         <file>qml/views/History.qml</file>
-        <file>qml/views/Home.qml</file>
         <file>qml/views/Settings.qml</file>
         <file>qml/views/settings/CheckBoxSetting.qml</file>
         <file>qml/views/Switcher.qml</file>
