@@ -32,6 +32,10 @@
 
 #include <QDir>
 
+#include <Zway/memorybuffer.h>
+#include <Zway/ubj/store/blob.h>
+#include <Zway/store.h>
+
 // ============================================================ //
 
 /**
@@ -554,7 +558,7 @@ bool FileSystemModel::copyResource(uint64_t src, const QString &dst)
         return false;
     }
 
-    m_backend->store()->readBlob("blob3", node["data"].toLong(), [&info, &file] (bool error, Store::BLOB blob) {
+    m_backend->store()->readBlob("blob3", node["data"].toLong(), [&info, &file] (bool error, UBJ::Store::Blob$ blob) {
 
         if (!error) {
 
@@ -562,7 +566,7 @@ bool FileSystemModel::copyResource(uint64_t src, const QString &dst)
 
             uint32_t bytesWritten = 0;
 
-            BUFFER buf = Buffer::create(nullptr, blockSize);
+            MemoryBuffer$ buf = MemoryBuffer::create(nullptr, blockSize);
 
             if (!buf) {
 

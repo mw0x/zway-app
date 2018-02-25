@@ -63,12 +63,12 @@ public:
     virtual ~BackendBase();
 
 
-    bool start(const QString &host, uint16_t port, EVENT_HANDLER_CALLBACK handler);
+    bool start(const QString &host, uint16_t port, EventHandlerCallback handler);
 
     bool close();
 
 
-    void onEvent(CLIENT client, EVENT event);
+    void onEvent(Client$ client, Event$ event);
 
 
     qreal dp() { return m_dp; }
@@ -132,10 +132,10 @@ public:
     Q_INVOKABLE void resetInbox(quint32 contactId);
 
 
-    bool findContact(const UBJ::Value &query, REQUEST_CALLBACK callback = nullptr);
+    bool findContact(const UBJ::Value &query, RequestCallback callback = nullptr);
 
 
-    bool processDispatchRequest(const UBJ::Object &args, REQUEST_CALLBACK callback=nullptr);
+    bool processDispatchRequest(const UBJ::Object &args, RequestCallback callback=nullptr);
 
     bool processResourceRecv(UBJ::Object &message, UBJ::Object &resource);
 

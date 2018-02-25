@@ -88,9 +88,9 @@ public slots:
 
 protected:
 
-    QVariantMap messageToVariant(MESSAGE message);
+    QVariantMap messageToVariant(Message$ message);
 
-    QVariantMap resourceToVariant(RESOURCE resource);
+    QVariantMap resourceToVariant(Resource$ resource);
 
     QHash<int, QByteArray> roleNames() const;
 

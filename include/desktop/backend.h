@@ -50,7 +50,7 @@ public:
     bool start(const QString &host, uint16_t port=ZWAY_PORT);
 
 
-    void onEvent(CLIENT client, EVENT event);
+    void onEvent(Client$ client, Event$ event);
 
 
     Q_INVOKABLE bool init();

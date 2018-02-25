@@ -37,9 +37,12 @@
 #include <QJsonArray>
 #include <QRegularExpression>
 
-#include <Zway/event/eventhandler.h>
+#include <Zway/crypto/crypto.h>
+#include <Zway/message/resource.h>
 #include <Zway/request/configrequest.h>
 #include <Zway/request/dispatchrequest.h>
+#include <Zway/request/requestevent.h>
+#include <Zway/store.h>
 
 // ============================================================ //
 
@@ -159,14 +162,14 @@ BackendBase::~BackendBase()
  * @return
  */
 
-bool BackendBase::start(const QString &host, uint16_t port, EVENT_HANDLER_CALLBACK handler)
+bool BackendBase::start(const QString &host, uint16_t port, EventHandlerCallback handler)
 {
     if (!Client::startup()) {
 
         return false;
     }
 
-    m_eventHandler = EVENT_HANDLER(new EventHandler());
+    m_eventHandler = EventHandler$(new EventHandler());
 
     m_eventHandler->addHandler(shared_from_this(), handler);
 
@@ -221,7 +224,7 @@ bool BackendBase::close()
  * @param event
  */
 
-void BackendBase::onEvent(CLIENT client, EVENT event)
+void BackendBase::onEvent(Client$ client, Event$ event)
 {
     if (event->error().size()) {
 
@@ -445,7 +448,7 @@ bool BackendBase::createAccount(const QJsonObject &args, const QJSValue &callbac
                 {"findByName" , args["findByName"].toBool()},
                 {"storeDir"   , m_storeDir.toStdString()}
             },
-            [this,callback] (REQUEST_EVENT event, REQUEST) {
+            [this,callback] (RequestEvent$ event, Request$) {
 
                 emit invokeCallback(
                     callback, {
@@ -485,7 +488,7 @@ void BackendBase::logout()
 {
     if (status() >= Authenticated) {
 
-        request(UBJ_OBJ("requestType" << Request::Logout), [] (REQUEST_EVENT, REQUEST) {
+        request(UBJ_OBJ("requestType" << Request::Logout), [] (RequestEvent$, Request$) {
 
             QGuiApplication::quit();
         });
@@ -514,7 +517,7 @@ bool BackendBase::setConfig(const QJsonObject &config, const QJSValue &callback)
 
     auto req = ConfigRequest::create(
                 shared_from_this(), obj,
-                [this, callback] (REQUEST_EVENT event, REQUEST) {
+                [this, callback] (RequestEvent$ event, Request$) {
 
                     emit invokeCallback(
                             callback,
@@ -553,7 +556,7 @@ bool BackendBase::addContact(
                 {"name"       , name.toStdString()},
                 {"phone"      , phone.toStdString()}
             },
-            [this,callback] (REQUEST_EVENT event, REQUEST) {
+            [this,callback] (RequestEvent$ event, Request$) {
 
                 emit invokeCallback(
                     callback, {
@@ -574,7 +577,7 @@ bool BackendBase::createAddCode(const QJSValue &callback)
     return request({
                 {"requestType", Request::CreateAddCode}
             },
-            [this,callback] (REQUEST_EVENT event, REQUEST) {
+            [this,callback] (RequestEvent$ event, Request$) {
 
                 emit invokeCallback(
                     callback, {
@@ -597,7 +600,7 @@ bool BackendBase::acceptContact(quint32 requestId, const QJSValue &callback)
                 {"requestType"     , Request::AcceptContact},
                 {"contactRequestId", requestId}
             },
-            [this,callback] (REQUEST_EVENT event, REQUEST) {
+            [this,callback] (RequestEvent$ event, Request$) {
 
                 emit invokeCallback(
                     callback, {
@@ -620,7 +623,7 @@ bool BackendBase::rejectContact(quint32 requestId, const QJSValue &callback)
                 {"requestType"     , Request::RejectContact},
                 {"contactRequestId", requestId}
             },
-            [this,callback] (REQUEST_EVENT event, REQUEST) {
+            [this,callback] (RequestEvent$ event, Request$) {
 
                 emit invokeCallback(
                     callback, {
@@ -643,7 +646,7 @@ bool BackendBase::cancelRequest(quint32 requestId, const QJSValue &callback)
                 {"dispatchId"    , requestId},
                 {"dispatchAction", "cancel"},
             },
-            [this,callback,requestId] (REQUEST_EVENT event, REQUEST) {
+            [this,callback,requestId] (RequestEvent$ event, Request$) {
 
                 emit invokeCallback(
                     callback, {
@@ -671,7 +674,7 @@ bool BackendBase::postMessage(const QJsonObject &message)
 
     // create message
 
-    MESSAGE msg = Message::create();
+    Message$ msg = Message::create();
 
     msg->setSrc(src);
 
@@ -699,7 +702,7 @@ bool BackendBase::postMessage(const QJsonObject &message)
                 continue;
             }
 
-            RESOURCE res = FileSystemResource::create(path.toStdString(), name.toStdString());
+            Resource$ res = FileSystemResource::create(path.toStdString(), name.toStdString());
 
             if (!res) {
 
@@ -774,7 +777,7 @@ bool BackendBase::postMessage(const QJsonObject &message)
                 continue;
             }
 
-            RESOURCE res = LocalStoreResource::create(store(), 0, resId);
+            Resource$ res = LocalStoreResource::create(store(), 0, resId);
 
             if (res) {
 
@@ -1025,7 +1028,7 @@ void BackendBase::resetInbox(quint32 contactId)
  * @return
  */
 
-bool BackendBase::findContact(const UBJ::Value &query, REQUEST_CALLBACK callback)
+bool BackendBase::findContact(const UBJ::Value &query, RequestCallback callback)
 {
     return request({
                 {"requestType", Request::FindContact},
@@ -1041,12 +1044,12 @@ bool BackendBase::findContact(const UBJ::Value &query, REQUEST_CALLBACK callback
  * @return
  */
 
-bool BackendBase::processDispatchRequest(const UBJ::Object &args, REQUEST_CALLBACK callback)
+bool BackendBase::processDispatchRequest(const UBJ::Object &args, RequestCallback callback)
 {
     return postRequest(DispatchRequest::create(
                     shared_from_this(),
                     args,
-                    [=] (REQUEST_EVENT event, REQUEST request) {
+                    [=] (RequestEvent$ event, Request$ request) {
 
         if (args["dispatchAction"].toStr() == "cancel") {
 

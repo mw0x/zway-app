@@ -32,6 +32,9 @@
 
 #include <QDebug>
 
+#include <Zway/message/resource.h>
+#include <Zway/store.h>
+
 // ============================================================ //
 
 /**
@@ -235,7 +238,7 @@ void HistoryModel::onUpdateView(const QVariantList &items)
  * @return
  */
 
-QVariantMap HistoryModel::messageToVariant(MESSAGE message)
+QVariantMap HistoryModel::messageToVariant(Message$ message)
 {
     QVariantMap msg;
 
@@ -264,7 +267,7 @@ QVariantMap HistoryModel::messageToVariant(MESSAGE message)
  * @return
  */
 
-QVariantMap HistoryModel::resourceToVariant(RESOURCE resource)
+QVariantMap HistoryModel::resourceToVariant(Resource$ resource)
 {
     QVariantMap res;
 

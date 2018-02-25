@@ -30,6 +30,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 
+/*
 #if (defined Q_OS_LINUX && !defined Q_OS_ANDROID) || defined Q_OS_WIN
 #define STATIC_BUILD
 #include <QQmlExtensionPlugin>
@@ -39,6 +40,7 @@ Q_IMPORT_PLUGIN(QtQuick2WindowPlugin)
 Q_IMPORT_PLUGIN(QtQuickLayoutsPlugin)
 //Q_IMPORT_PLUGIN(QMultimediaDeclarativeModule)
 #endif
+*/
 
 #if defined Q_OS_WIN
 #include <windows.h>
@@ -50,6 +52,8 @@ Q_IMPORT_PLUGIN(QtQuickLayoutsPlugin)
 #else
 #include "desktop/backend.h"
 #endif
+
+#include <Zway/crypto/crypto.h>
 
 // ============================================================ //
 

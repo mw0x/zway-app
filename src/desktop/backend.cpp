@@ -35,6 +35,7 @@
 #include "desktop/backend.h"
 
 #include <Zway/event/eventhandler.h>
+#include <Zway/store.h>
 
 // ============================================================ //
 
@@ -72,7 +73,7 @@ bool Backend::start(const QString &host, uint16_t port)
  * @param event
  */
 
-void Backend::onEvent(CLIENT client, EVENT event)
+void Backend::onEvent(Client$ client, Event$ event)
 {
     switch (event->type()) {
     default:
@@ -122,7 +123,7 @@ bool Backend::handleClose()
 
 void Backend::unlockStore(const QString &filename, const QString &password, const QJSValue &callback)
 {
-    STORE store = Store::unlock(filename.toStdString(), password.toStdString(), true);
+    Store$ store = Store::unlock(filename.toStdString(), password.toStdString(), true);
 
     if (!store) {
 

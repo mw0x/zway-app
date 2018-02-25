@@ -34,6 +34,11 @@
 #include <QFileInfo>
 #include <QDir>
 
+#include <Zway/memorybuffer.h>
+#include <Zway/message/resource.h>
+#include <Zway/ubj/store/blob.h>
+#include <Zway/store.h>
+
 // ============================================================ //
 
 /**
@@ -119,7 +124,7 @@ QVariant LocalStoreModel::getItemData(qint32 index)
 
 bool LocalStoreModel::cd(quint32 dir)
 {
-    STORE store = m_backend->store();
+    Store$ store = m_backend->store();
 
     if (dir) {
 
@@ -406,7 +411,7 @@ bool LocalStoreModel::copyFile(const QString &src, uint64_t dst)
 {
     QFileInfo info(src);
 
-    RESOURCE file = FileSystemResource::create(info.absoluteFilePath().toStdString());
+    Resource$ file = FileSystemResource::create(info.absoluteFilePath().toStdString());
 
     if (!file || !file->open()) {
 
@@ -420,7 +425,7 @@ bool LocalStoreModel::copyFile(const QString &src, uint64_t dst)
         return false;
     }
 
-    m_backend->store()->writeBlob("blob3", blobId, [&info, &file] (bool error, Store::BLOB blob) {
+    m_backend->store()->writeBlob("blob3", blobId, [&info, &file] (bool error, UBJ::Store::Blob$ blob) {
 
         if (!error) {
 
@@ -428,7 +433,7 @@ bool LocalStoreModel::copyFile(const QString &src, uint64_t dst)
 
             uint32_t bytesWritten = 0;
 
-            BUFFER buf = Buffer::create(nullptr, blockSize);
+            MemoryBuffer$ buf = MemoryBuffer::create(nullptr, blockSize);
 
             if (!buf) {
 

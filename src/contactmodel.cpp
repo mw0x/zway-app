@@ -32,6 +32,11 @@
 
 #include <QJsonObject>
 
+#include <Zway/request.h>
+#include <Zway/request/requestevent.h>
+#include <Zway/ubj/store/cursor.h>
+#include <Zway/store.h>
+
 // ============================================================ //
 
 /**
@@ -130,7 +135,7 @@ void ContactModel::updateItems(const QString &filter, const QString &searchOnlin
 
                 UBJ_OBJ("subject" << searchOnline.toStdString()),
 
-                [this, callback] (REQUEST_EVENT event, REQUEST) {
+                [this, callback] (RequestEvent$ event, Request$) {
 
                     QJsonArray items;
 
@@ -156,7 +161,7 @@ void ContactModel::updateItems(const QString &filter, const QString &searchOnlin
 
             m_backend->store()->query(
                         "contact_requests", {},
-                        [&] (bool error, UBJ::Store::CURSOR cursor) {
+                        [&] (bool error, Zway::UBJ::Store::Cursor$ cursor) {
 
                 if (!error) {
 
@@ -194,7 +199,7 @@ void ContactModel::updateItems(const QString &filter, const QString &searchOnlin
 
             m_backend->store()->query(
                         "contacts", {}, UBJ_OBJ("name" << 1), {}, 0, 0,
-                        [&] (bool error, UBJ::Store::CURSOR cursor) {
+                        [&] (bool error, UBJ::Store::Cursor$ cursor) {
 
                 if (!error) {
 

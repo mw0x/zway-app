@@ -32,6 +32,9 @@
 
 #include <QUrlQuery>
 
+#include <Zway/memorybuffer.h>
+#include <Zway/store.h>
+
 // ============================================================ //
 
 ImageService *ImageService::_inst = nullptr;
@@ -269,7 +272,7 @@ QImage ImageService::loadImageFileSystem(const QString &path)
 
 QImage ImageService::loadImageLocalStore(uint64_t blobId)
 {
-    BUFFER buf = ((BackendBase*)parent())->store()->getBlobData("blob3", blobId);
+    MemoryBuffer$ buf = ((BackendBase*)parent())->store()->getBlobData("blob3", blobId);
 
     if (buf) {
 
