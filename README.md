@@ -8,26 +8,9 @@ All your data is stored inside a password-protected, encrypted container on your
 
 For more technical details, please refer to the [zway-lib](https://github.com/mw0x/zway-lib) repository.
 
-## Screenshots
-
-To get a glimpse of what it looks like at the moment, here are some screenshots taken from my Galaxy S6 device:
-
-![alt text](http://dl.atomicode.de/screenshots/1.png "Contact list")
-
-![alt text](http://dl.atomicode.de/screenshots/2.png "History")
-
-
-## Binaries
-
-Zway is under development and not yet ready for end-users, anyway there is a test server up and running and binaries for the following platforms (iOS and Windows will follow):
-
-* [Android](http://dl.atomicode.de/Zway.apk)
-* [Linux x64](http://dl.atomicode.de/Zway_linux_x64.zip)
-* [Mac OS X](http://dl.atomicode.de/Zway.dmg)
-
 ## How to build
 
-Zway's user interface is built on top of [Qt](https://www.qt.io/), a powerful and established C++ framework for cross-platform applications.
+Zway's user interface is built on top of [Qt](https://www.qt.io/), a powerful and well established C++ framework for cross-platform applications.
 
 You can download precompiled Qt libraries or build them yourself from source.
 
